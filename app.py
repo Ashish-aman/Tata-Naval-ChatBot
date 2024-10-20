@@ -2,9 +2,13 @@ import os
 import streamlit as st
 from dotenv import load_dotenv
 # from llama_index.prompts import PromptHelper
-
+import streamlit as st
+from llama_index import VectorStoreIndex, ServiceContext, Document
+from llama_index.llms import OpenAI
+import openai
+from llama_index import SimpleDirectoryReader
 from llama_index.core import GPTVectorStoreIndex, VectorStoreIndex, ServiceContext, Document
-from llama_index import  PromptHelper, ServiceContext, download_loader, SimpleDirectoryReader
+# from llama_index import  PromptHelper, ServiceContext, download_loader, SimpleDirectoryReader
 from langchain import OpenAI
 from llama_index.llms.openai import OpenAI
 from llama_index.core import SimpleDirectoryReader
@@ -14,7 +18,16 @@ from PyPDF2 import PdfReader
 
 # Load environment variables for the OpenAI API key
 load_dotenv()
+@st.cache_resource(show_spinner=False)
+def load_data():
+    with st.spinner(text="Loading and indexing the Streamlit docs – hang tight! This should take 1-2 minutes."):
+        reader = SimpleDirectoryReader(input_dir="./data", recursive=True)
+        docs = reader.load_data()
+        service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt="You are an expert on the Streamlit Python library and your job is to answer technical questions. Assume that all questions are related to the Streamlit Python library. Keep your answers technical and based on facts – do not hallucinate features."))
+        index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+        return index
 
+index = load_data()
 # Set the OpenAI API key
 openai_api_key = os.getenv('OPENAI_API_KEY')
 if not openai_api_key:
@@ -31,7 +44,59 @@ def main():
     
     # Step 1: Upload PDF
     uploaded_pdf = st.file_uploader("Choose a PDF file", type="pdf")
+    import streamlit as st
+    from llama_index import SimpleDirectoryReader, ServiceContext, VectorStoreIndex
+    from llama_index.llms import OpenAI
     
+    @st.cache_resource(show_spinner=False)
+    def load_data(uploaded_files):
+        with st.spinner(text="Loading and indexing the uploaded documents – hang tight! This may take a moment."):
+            # Create a list to hold the uploaded documents
+            docs = []
+            
+            # Read the uploaded files
+            for uploaded_file in uploaded_files:
+                # Assuming the uploaded file is a text file, you can adjust this based on your file types
+                content = uploaded_file.read()
+                # You might need to decode the content based on the file type
+                docs.append(content.decode("utf-8"))  # Change this according to your requirements
+                
+            # Create a SimpleDirectoryReader using the list of documents
+            # (This is a simplification; you might want to store them in a temporary directory)
+            service_context = ServiceContext.from_defaults(
+                llm=OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt="You are an expert on the Streamlit Python library and your job is to answer technical questions. Assume that all questions are related to the Streamlit Python library. Keep your answers technical and based on facts – do not hallucinate features.")
+            )
+            
+            # Indexing the documents
+            index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+            return index
+    chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True)
+    if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+    for message in st.session_state.messages: # Display the prior chat messages
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
+
+        # If last message is not from assistant, generate a new response
+    if st.session_state.messages[-1]["role"] != "assistant":
+        with st.chat_message("assistant"):
+            with st.spinner("Thinking..."):
+                response = chat_engine.chat(prompt)
+                st.write(response.response)
+                message = {"role": "assistant", "content": response.response}
+                st.session_state.messages.append(message) # Add response to message history
+    # Streamlit app interface
+    st.title("Document Upload and Indexing")
+    
+    # File uploader widget
+    uploaded_files = st.file_uploader("Upload your documents", type=["txt", "pdf", "docx"], accept_multiple_files=True)
+    
+    if uploaded_files:
+        # Call load_data only if there are uploaded files
+        index = load_data(uploaded_files)
+        st.success("Documents have been successfully loaded and indexed!")
+
     if uploaded_pdf:
         # Step 2: Read the uploaded PDF
         reader = PdfReader(uploaded_pdf)
@@ -51,7 +116,7 @@ def main():
         max_input_size = 4096
         num_output = 512
         max_chunk_overlap = 20
-        prompt_helper = PromptHelper(max_input_size, num_output, max_chunk_overlap)
+        # prompt_helper = PromptHelper(max_input_size, num_output, max_chunk_overlap)
     
         # Set up the service context with the prompt helper and LLM predictor
         service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, prompt_helper=prompt_helper)
@@ -74,6 +139,8 @@ def main():
         with get_openai_callback() as cb:
             response = query_engine.query(query)
             return response.response.replace('\n\n', '\n'), cb
+            chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True)
+
 
 
     st.set_page_config(page_title="Tata Naval Chatbot & Troubleshooter", layout="wide")
