@@ -1,7 +1,8 @@
 import os
 import streamlit as st
 from dotenv import load_dotenv
-from llama_index import LLMPredictor, GPTVectorStoreIndex, PromptHelper, ServiceContext, download_loader, SimpleDirectoryReader
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+from llama_index.llms import LLMPredictor, GPTVectorStoreIndex, PromptHelper, ServiceContext, download_loader, SimpleDirectoryReader
 from langchain import OpenAI
 from langchain.callbacks import get_openai_callback
 from PyPDF2 import PdfReader
