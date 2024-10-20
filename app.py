@@ -70,7 +70,7 @@ def main():
             # Indexing the documents
             index = VectorStoreIndex.from_documents(docs, service_context=service_context)
             return index
-    chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True)
+    chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True, streaming = True)
     if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
 
