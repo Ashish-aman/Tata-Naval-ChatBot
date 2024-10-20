@@ -43,7 +43,7 @@ def main():
         documents = [text]  
     
         # Define the LLM (OpenAI GPT) model
-        llm_predictor = OpenAI(model_name="gpt-3.5-turbo-instruct")
+        llm_predictor = OpenAI(model_name='gpt-3.5-turbo-instruct')
     
         # Define prompt helper settings
         max_input_size = 4096
