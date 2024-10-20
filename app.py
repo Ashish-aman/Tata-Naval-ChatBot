@@ -18,14 +18,14 @@ from PyPDF2 import PdfReader
 
 # Load environment variables for the OpenAI API key
 load_dotenv()
-@st.cache_resource(show_spinner=False)
-def load_data():
-    with st.spinner(text="Loading and indexing the Streamlit docs – hang tight! This should take 1-2 minutes."):
-        reader = SimpleDirectoryReader(input_dir="./data", recursive=True)
-        docs = reader.load_data()
-        service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt="You are an expert on the Streamlit Python library and your job is to answer technical questions. Assume that all questions are related to the Streamlit Python library. Keep your answers technical and based on facts – do not hallucinate features."))
-        index = VectorStoreIndex.from_documents(docs, service_context=service_context)
-        return index
+# @st.cache_resource(show_spinner=False)
+# def load_data():
+#     with st.spinner(text="Loading and indexing the Streamlit docs – hang tight! This should take 1-2 minutes."):
+#         reader = SimpleDirectoryReader(input_dir="./data", recursive=True)
+#         docs = reader.load_data()
+#         service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt="You are an expert on the Streamlit Python library and your job is to answer technical questions. Assume that all questions are related to the Streamlit Python library. Keep your answers technical and based on facts – do not hallucinate features."))
+#         index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+#         return index
 
 index = load_data()
 # Set the OpenAI API key
