@@ -1,10 +1,10 @@
 import os
 import streamlit as st
 from dotenv import load_dotenv
-from llama_index.prompts import PromptHelper
+# from llama_index.prompts import PromptHelper
 
 from llama_index.core import GPTVectorStoreIndex, VectorStoreIndex, ServiceContext, Document
-from llama_index import  ServiceContext, download_loader, SimpleDirectoryReader
+from llama_index import  PromptHelper, ServiceContext, download_loader, SimpleDirectoryReader
 from langchain import OpenAI
 from llama_index.llms.openai import OpenAI
 from llama_index.core import SimpleDirectoryReader
