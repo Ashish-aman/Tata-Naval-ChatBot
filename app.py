@@ -27,7 +27,7 @@ load_dotenv()
 #         index = VectorStoreIndex.from_documents(docs, service_context=service_context)
 #         return index
 
-index = load_data()
+# index = load_data()
 # Set the OpenAI API key
 openai_api_key = os.getenv('OPENAI_API_KEY')
 if not openai_api_key:
