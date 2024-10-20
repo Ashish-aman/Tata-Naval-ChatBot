@@ -1,9 +1,11 @@
 import os
 import streamlit as st
 from dotenv import load_dotenv
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
-from llama_index.llms import LLMPredictor, GPTVectorStoreIndex, PromptHelper, ServiceContext, download_loader, SimpleDirectoryReader
+from llama_index.core import VectorStoreIndex, ServiceContext, Document
+from llama_index.llms import GPTVectorStoreIndex, PromptHelper, ServiceContext, download_loader, SimpleDirectoryReader
 from langchain import OpenAI
+from llama_index.llms.openai import OpenAI
+from llama_index.core import SimpleDirectoryReader
 from langchain.callbacks import get_openai_callback
 from PyPDF2 import PdfReader
 
@@ -41,7 +43,7 @@ def main():
         documents = [text]  
     
         # Define the LLM (OpenAI GPT) model
-        llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="text-davinci-003"))
+        llm_predictor = OpenAI(model_name=“gpt-3.5-turbo-instruct”)
     
         # Define prompt helper settings
         max_input_size = 4096
