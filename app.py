@@ -294,7 +294,7 @@ from llama_index.core import download_loader
 import streamlit as st
 import os
 import tempfile
-from llama_index import download_loader
+from llama_index.core import download_loader
 
 # Download the SimpleDirectoryReader loader
 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
