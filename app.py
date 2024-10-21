@@ -71,7 +71,7 @@ if uploaded_file is not None:
         # load
 
         # Initialize the document reader to load from the temporary directory
-        loader = PyPDFLoader(input_dir=temp_file_path, recursive=False, exclude_hidden=True)
+        loader = PyPDFLoader(temp_file_path, recursive=False, exclude_hidden=True)
         documents = loader.load_data()
 
         # Model settings
