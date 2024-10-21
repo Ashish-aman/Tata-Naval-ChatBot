@@ -182,82 +182,82 @@
 
 
 
-import os
-import streamlit as st
-from dotenv import load_dotenv
-from llama_index.core import SimpleDirectoryReader, GPTVectorStoreIndex, ServiceContext, Document
-from langchain import OpenAI
-from langchain.callbacks import get_openai_callback
-from PyPDF2 import PdfReader
+# import os
+# import streamlit as st
+# from dotenv import load_dotenv
+# from llama_index.core import SimpleDirectoryReader, GPTVectorStoreIndex, ServiceContext, Document
+# from langchain import OpenAI
+# from langchain.callbacks import get_openai_callback
+# from PyPDF2 import PdfReader
 
-# Load environment variables for the OpenAI API key
-load_dotenv()
+# # Load environment variables for the OpenAI API key
+# load_dotenv()
 
-# Set the OpenAI API key
-openai_api_key = os.getenv('OPENAI_API_KEY')
-if not openai_api_key:
-    st.error("OpenAI API key is missing. Please set it in the .env file.")
-    st.stop()
+# # Set the OpenAI API key
+# openai_api_key = os.getenv('OPENAI_API_KEY')
+# if not openai_api_key:
+#     st.error("OpenAI API key is missing. Please set it in the .env file.")
+#     st.stop()
 
-# Streamlit App UI
-def main():
-    st.title("Document Upload and Indexing")
+# # Streamlit App UI
+# def main():
+#     st.title("Document Upload and Indexing")
 
-    # File uploader widget
-    uploaded_files = st.file_uploader("Upload your documents", type=["txt", "pdf", "docx"], accept_multiple_files=True)
+#     # File uploader widget
+#     uploaded_files = st.file_uploader("Upload your documents", type=["txt", "pdf", "docx"], accept_multiple_files=True)
 
-    if uploaded_files:
-        index = load_data(uploaded_files)
-        st.success("Documents have been successfully loaded and indexed!")
+#     if uploaded_files:
+#         index = load_data(uploaded_files)
+#         st.success("Documents have been successfully loaded and indexed!")
 
-    if uploaded_pdf:
-        reader = PdfReader(uploaded_pdf)
-        text = ""
-        for page in reader.pages:
-            text += page.extract_text()
-        with open("temp_manual.txt", "w") as f:
-            f.write(text)
+#     if uploaded_pdf:
+#         reader = PdfReader(uploaded_pdf)
+#         text = ""
+#         for page in reader.pages:
+#             text += page.extract_text()
+#         with open("temp_manual.txt", "w") as f:
+#             f.write(text)
         
-        documents = [text]  
-        llm_predictor = OpenAI(model_name='gpt-3.5-turbo-instruct')
-        service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
-        index = GPTVectorStoreIndex.from_documents(documents, service_context=service_context)
-        query_engine = index.as_query_engine()
+#         documents = [text]  
+#         llm_predictor = OpenAI(model_name='gpt-3.5-turbo-instruct')
+#         service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
+#         index = GPTVectorStoreIndex.from_documents(documents, service_context=service_context)
+#         query_engine = index.as_query_engine()
 
-    st.set_page_config(page_title="Tata Naval Chatbot & Troubleshooter", layout="wide")
-    st.title("Tata Motors Naval: Technical Helpdesk Chatbot")
-    st.sidebar.title("About the App")
-    st.sidebar.info("This app is designed to help Tata Motors customers and technicians troubleshoot vehicle issues by providing direct answers to questions based on car manuals and other technical documents.")
+#     st.set_page_config(page_title="Tata Naval Chatbot & Troubleshooter", layout="wide")
+#     st.title("Tata Motors Naval: Technical Helpdesk Chatbot")
+#     st.sidebar.title("About the App")
+#     st.sidebar.info("This app is designed to help Tata Motors customers and technicians troubleshoot vehicle issues by providing direct answers to questions based on car manuals and other technical documents.")
 
-    user_query = st.text_input("Enter your query below:", placeholder="e.g., How can I open the tailgate?")
-    if st.button("Get Answer"):
-        if user_query:
-            with st.spinner("Fetching the best answer for you..."):
-                response, callback_info = get_chat_response(user_query)
-            st.subheader("Chatbot Response:")
-            st.write(response)
+#     user_query = st.text_input("Enter your query below:", placeholder="e.g., How can I open the tailgate?")
+#     if st.button("Get Answer"):
+#         if user_query:
+#             with st.spinner("Fetching the best answer for you..."):
+#                 response, callback_info = get_chat_response(user_query)
+#             st.subheader("Chatbot Response:")
+#             st.write(response)
 
-@st.cache_resource(show_spinner=False)
-def load_data(uploaded_files):
-    with st.spinner(text="Loading and indexing the uploaded documents – hang tight! This may take a moment."):
-        docs = []
-        for uploaded_file in uploaded_files:
-            content = uploaded_file.read()
-            docs.append(content.decode("utf-8"))
-        service_context = ServiceContext.from_defaults(
-            llm=OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt="You are an expert on the Streamlit Python library and your job is to answer technical questions. Assume that all questions are related to the Streamlit Python library. Keep your answers technical and based on facts – do not hallucinate features.")
-        )
-        index = VectorStoreIndex.from_documents(docs, service_context=service_context)
-        return index
+# @st.cache_resource(show_spinner=False)
+# def load_data(uploaded_files):
+#     with st.spinner(text="Loading and indexing the uploaded documents – hang tight! This may take a moment."):
+#         docs = []
+#         for uploaded_file in uploaded_files:
+#             content = uploaded_file.read()
+#             docs.append(content.decode("utf-8"))
+#         service_context = ServiceContext.from_defaults(
+#             llm=OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt="You are an expert on the Streamlit Python library and your job is to answer technical questions. Assume that all questions are related to the Streamlit Python library. Keep your answers technical and based on facts – do not hallucinate features.")
+#         )
+#         index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+#         return index
 
-def get_chat_response(query):
-    query_engine = index.as_query_engine()
-    with get_openai_callback() as cb:
-        response = query_engine.query(query)
-        return response.response.replace('\n\n', '\n'), cb
+# def get_chat_response(query):
+#     query_engine = index.as_query_engine()
+#     with get_openai_callback() as cb:
+#         response = query_engine.query(query)
+#         return response.response.replace('\n\n', '\n'), cb
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
 
 
