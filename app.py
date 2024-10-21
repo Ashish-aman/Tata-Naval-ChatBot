@@ -88,9 +88,9 @@ if uploaded_file is not None:
                 with get_openai_callback() as cb:
                     response = query_engine.query(query_str)
                 
-                # Format and display the response
-                formatted_response = response.response.replace('\n\n', '\n')
-                st.write(f"**Response:**\n\n{formatted_response}")
+            # Format and display the response
+            formatted_response = response.response.replace('\n\n', '\n')
+            st.write(f"**Response:**\n\n{formatted_response}")
 
                 # Save the chat data to SQLite
                 save_chat_data(customer_name, car_model, warranty_date, query_str, formatted_response)
