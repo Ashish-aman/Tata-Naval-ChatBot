@@ -3,7 +3,7 @@ import streamlit as st
 import tempfile
 import sqlite3
 from datetime import datetime
-from llama_index import download_loader
+from llama_index.core import download_loader
 from langchain import OpenAI
 from langchain.callbacks import get_openai_callback
 from llama_index.core import SimpleDirectoryReader, GPTVectorStoreIndex, ServiceContext, Document
