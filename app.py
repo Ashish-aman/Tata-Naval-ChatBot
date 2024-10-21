@@ -11,7 +11,8 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.llms.openai import OpenAI
 from llama_index.core import Settings
-
+import os
+os.environ['OPENAI_API_KEY'] =  'sk-R-ufHOxSH8tEH8RxeDHlMQOjvRdwVrq9s6KkzaXexDT3BlbkFJ2l1X9fb-fSwtVaOdfYJjt69TvgJ5ycDs1zS-0Mc0IA'
 # Database setup (SQLite in this example)
 DB_FILE = "chat_data.db"
 
