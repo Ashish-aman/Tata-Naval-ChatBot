@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Set the OpenAI API key from environment variable
-os.environ['OPENAI_API_KEY'] = os.getenv('sk-R-ufHOxSH8tEH8RxeDHlMQOjvRdwVrq9s6KkzaXexDT3BlbkFJ2l1X9fb-fSwtVaOdfYJjt69TvgJ5ycDs1zS-0Mc0IA')
+os.environ['OPENAI_API_KEY'] = 'sk-R-ufHOxSH8tEH8RxeDHlMQOjvRdwVrq9s6KkzaXexDT3BlbkFJ2l1X9fb-fSwtVaOdfYJjt69TvgJ5ycDs1zS-0Mc0IA'
 # Database setup (SQLite in this example)
 DB_FILE = "chat_data.db"
 
