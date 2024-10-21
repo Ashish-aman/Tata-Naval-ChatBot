@@ -4,5 +4,6 @@ python-dotenv
 sqlalchemy
 langchain
 openai
-
+llama-index
+llama-index-core
 langchain-community --trusted-host mirrors.cloud.tencent.com
