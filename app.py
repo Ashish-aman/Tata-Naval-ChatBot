@@ -270,11 +270,11 @@
 
 
 
-!pip install llama_index
+# !pip install llama_index
 
-!pip install python-dotenv
+# !pip install python-dotenv
 
-!pip install --upgrade sqlalchemy
+# !pip install --upgrade sqlalchemy
 
 import os
 from dotenv import load_dotenv
@@ -327,9 +327,9 @@ if uploaded_file is not None:
 #     documents = loader.load_data()
 
 
-!pip install langchain
+# !pip install langchain
 
-!pip install llama-index
+# !pip install llama-index
 
 import os
 os.environ['OPENAI_API_KEY'] =  'sk-R-ufHOxSH8tEH8RxeDHlMQOjvRdwVrq9s6KkzaXexDT3BlbkFJ2l1X9fb-fSwtVaOdfYJjt69TvgJ5ycDs1zS-0Mc0IA'
@@ -371,7 +371,7 @@ index = GPTVectorStoreIndex.from_documents(
 # ... until you create a query engine
 query_engine = index.as_query_engine(llm=Settings.llm)
 
-pip install langchain-community --trusted-host mirrors.cloud.tencent.com
+# pip install langchain-community --trusted-host mirrors.cloud.tencent.com
 
 from langchain.callbacks import get_openai_callback
 
