@@ -92,11 +92,11 @@ if uploaded_file is not None:
             formatted_response = response.response.replace('\n\n', '\n')
             st.write(f"**Response:**\n\n{formatted_response}")
 
-                # Save the chat data to SQLite
-                save_chat_data(customer_name, car_model, warranty_date, query_str, formatted_response)
-                st.success("Chat data saved successfully!")
-            else:
-                st.error("Please enter a question before shooting.")
+            # Save the chat data to SQLite
+            save_chat_data(customer_name, car_model, warranty_date, query_str, formatted_response)
+            st.success("Chat data saved successfully!")
+        else:
+            st.error("Please enter a question before shooting.")
 
 # Option to view all stored chat data (Optional)
 if st.button("View Chat Data"):
