@@ -259,3 +259,130 @@ def get_chat_response(query):
 if __name__ == "__main__":
     main()
 
+
+
+
+
+
+
+
+
+
+
+
+!pip install llama_index
+
+!pip install python-dotenv
+
+!pip install --upgrade sqlalchemy
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Now you can access the OpenAI API key using the environment variable:
+os.environ.get('OPENAI_API_KEY')
+
+from llama_index.core import SimpleDirectoryReader
+from llama_index.core import download_loader
+
+# # Downloads the document to be used in the chatbot
+# SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
+# loader = SimpleDirectoryReader('/content/data', recursive=True, exclude_hidden=True)
+# documents = loader.load_data()
+import streamlit as st
+import os
+import tempfile
+from llama_index import download_loader
+
+# Download the SimpleDirectoryReader loader
+SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
+
+# File uploader
+uploaded_file = st.file_uploader("Choose a file or manual from which you want to ask a question?")
+
+if uploaded_file is not None:
+    # Create a temporary directory to store the uploaded file
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create the file path
+        temp_file_path = os.path.join(temp_dir, uploaded_file.name)
+        
+        # Write the uploaded file to the temporary directory
+        with open(temp_file_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())  # Write the file content
+        
+        # Initialize the SimpleDirectoryReader to load from the temporary directory
+        loader = SimpleDirectoryReader(input_dir=temp_dir, recursive=False, exclude_hidden=True)
+        documents = loader.load_data()
+        
+        # You can now process the documents and proceed with further steps, e.g., querying the model
+        st.write("File successfully loaded. You can now ask your questions.")
+
+
+# uploaded_file = st.file_uploader("Choose a file or manual from which you want to ask a question?")
+# if uploaded_file is not None:
+#     # To read file as bytes:
+#     loader = SimpleDirectoryReader('/content/data', recursive=True, exclude_hidden=True)
+#     documents = loader.load_data()
+
+
+!pip install langchain
+
+!pip install llama-index
+
+import os
+os.environ['OPENAI_API_KEY'] =  'sk-R-ufHOxSH8tEH8RxeDHlMQOjvRdwVrq9s6KkzaXexDT3BlbkFJ2l1X9fb-fSwtVaOdfYJjt69TvgJ5ycDs1zS-0Mc0IA'
+
+# Import necessary classes from the LlamaIndex library
+from llama_index.core import SimpleDirectoryReader, GPTVectorStoreIndex, ServiceContext, Document
+from langchain import OpenAI
+# Import to OpenAI class from langchain library
+from langchain import OpenAI
+
+# Defines the language model for the LLMPredictor
+# In this case, it is an OpenAI template with temperature 0 and name "text-davinci-003".
+llm_predictor = OpenAI(model_name='gpt-3.5-turbo-instruct')
+
+# sets PromptHelper parameters
+# The maximum input size for the prompt is 4096 characters
+# The maximum output number is 256 tokens
+# The maximum chunk overlap is 20 characters
+max_input_size = 4096
+num_output = 256
+max_chunk_overlap = 20
+# prompt_helper = PromptHelper(max_input_size, num_output, max_chunk_overlap)
+
+from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.core.node_parser import SentenceSplitter
+from llama_index.llms.openai import OpenAI
+from llama_index.core import Settings
+
+Settings.llm = OpenAI(model="gpt-3.5-turbo")
+Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
+Settings.node_parser = SentenceSplitter(chunk_size=512, chunk_overlap=20)
+Settings.num_output = 512
+Settings.context_window = 3900
+
+# a vector store index only needs an embed model
+index = GPTVectorStoreIndex.from_documents(
+    documents, embed_model=Settings.embed_model)
+
+# ... until you create a query engine
+query_engine = index.as_query_engine(llm=Settings.llm)
+
+pip install langchain-community --trusted-host mirrors.cloud.tencent.com
+
+from langchain.callbacks import get_openai_callback
+
+# Creates the query engine
+query_engine = index.as_query_engine()
+
+# Make the query using the example query string
+with get_openai_callback() as cb:
+    query_str = "What is the fault code of DFC for wire diagnosis of downstream NOx sensor?"
+    response = query_engine.query(query_str)
+    print(cb)
+
+formatted_response = response.response.replace('\n\n', '\n')
+print(formatted_response)
