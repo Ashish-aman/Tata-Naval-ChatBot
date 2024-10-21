@@ -3,16 +3,25 @@ import streamlit as st
 import tempfile
 import sqlite3
 from datetime import datetime
+from langchain_community.llms import OpenAI
+from langchain_community.callbacks.manager import get_openai_callback
+
 from llama_index.core import download_loader
-from langchain import OpenAI
-from langchain.callbacks import get_openai_callback
+# from langchain import OpenAI
+# from langchain.callbacks import get_openai_callback
 from llama_index.core import SimpleDirectoryReader, GPTVectorStoreIndex, ServiceContext, Document
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.llms.openai import OpenAI
 from llama_index.core import Settings
 import os
-os.environ['OPENAI_API_KEY'] =  'sk-R-ufHOxSH8tEH8RxeDHlMQOjvRdwVrq9s6KkzaXexDT3BlbkFJ2l1X9fb-fSwtVaOdfYJjt69TvgJ5ycDs1zS-0Mc0IA'
+from dotenv import load_dotenv
+
+# Load environment variables from .env file if used
+load_dotenv()
+
+# Set the OpenAI API key from environment variable
+os.environ['OPENAI_API_KEY'] = os.getenv('sk-R-ufHOxSH8tEH8RxeDHlMQOjvRdwVrq9s6KkzaXexDT3BlbkFJ2l1X9fb-fSwtVaOdfYJjt69TvgJ5ycDs1zS-0Mc0IA')
 # Database setup (SQLite in this example)
 DB_FILE = "chat_data.db"
 
