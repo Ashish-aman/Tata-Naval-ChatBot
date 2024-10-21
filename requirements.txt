@@ -1,10 +1,8 @@
 streamlit
-llama_index 
+llama-index
 python-dotenv
+sqlalchemy
 langchain
-PyPDF2
-llama-index-core
-llama-index-llms-openai
-llama-index-llms-replicate
-llama-index-embeddings-huggingface
+openai
+
 langchain-community --trusted-host mirrors.cloud.tencent.com
