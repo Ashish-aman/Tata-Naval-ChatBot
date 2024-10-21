@@ -72,8 +72,9 @@ if uploaded_file is not None:
 
         # Initialize the document reader to load from the temporary directory
         loader = PyPDFLoader(temp_file_path)
-        documents = loader.load_data()
-
+        # documents = loader.load_data()
+        # loader = PyPDFLoader(temp_file_path)
+        documents = loader.load_and_split()
         # Model settings
         Settings.llm = OpenAI(model="gpt-3.5-turbo")
         Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
