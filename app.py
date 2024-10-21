@@ -20,9 +20,12 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file if used
 load_dotenv()
+# Now you can access the API key from the environment
+openai_api_key = os.getenv('OPENAI_API_KEY')
 
-# Set the OpenAI API key from environment variable
-os.environ['OPENAI_API_KEY'] = 'sk-R-ufHOxSH8tEH8RxeDHlMQOjvRdwVrq9s6KkzaXexDT3BlbkFJ2l1X9fb-fSwtVaOdfYJjt69TvgJ5ycDs1zS-0Mc0IA'
+# Use the API key in your application
+# Example: Setting the OpenAI API key
+os.environ['OPENAI_API_KEY'] = openai_api_key
 # Database setup (SQLite in this example)
 DB_FILE = "chat_data.db"
 
