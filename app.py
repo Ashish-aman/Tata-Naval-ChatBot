@@ -3,6 +3,7 @@ import streamlit as st
 import tempfile
 import sqlite3
 from datetime import datetime
+from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.llms import OpenAI
 from langchain_community.callbacks.manager import get_openai_callback
 
