@@ -66,10 +66,11 @@ if uploaded_file is not None:
     with tempfile.TemporaryDirectory() as temp_dir:
         temp_file_path = os.path.join(temp_dir, uploaded_file.name)
         with open(temp_file_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
+            f.write(uploaded_file.getvalue())
+        # load
 
         # Initialize the document reader to load from the temporary directory
-        loader = SimpleDirectoryReader(input_dir=temp_dir, recursive=False, exclude_hidden=True)
+        loader = PyPDFLoader(input_dir=temp_filepath, recursive=False, exclude_hidden=True)
         documents = loader.load_data()
 
         # Model settings
