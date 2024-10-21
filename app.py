@@ -71,7 +71,7 @@ if uploaded_file is not None:
         # load
 
         # Initialize the document reader to load from the temporary directory
-        loader = SimpleDirectoryReader(temp_file_path, recursive=True, exclude_hidden=True)
+        loader = SimpleDirectoryReader(temp_dir, recursive=True, exclude_hidden=True)
         documents = loader.load_data()
         # loader = PyPDFLoader(temp_file_path)
         # documents = loader.load_and_split()
